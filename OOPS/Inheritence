@@ -1,0 +1,40 @@
+class Pet(object):
+
+    def __init__(self, name, species):
+        self.name = name
+        self.species = species
+
+    def getName(self):
+        return self.name
+
+    def getSpecies(self):
+        return self.species
+
+    def printPet(self):
+        print(self.getName(),'is a :',self.getSpecies())
+
+class Dog(Pet):
+
+    def __init__(self, name, chases_cats):
+        
+        #Way to initialize variables which are coming from abstract class.
+        # here name and species are coming from Pet class (which is abstract class)
+        # So insntantiation of Pet is required to get basic info abt object.
+        Pet.__init__(self, name, "Dog")
+        
+        #extra feature of specfic species (here Dog ..just in case)
+        self.chases_cats = chases_cats
+
+    def chasesCats(self):
+        return self.chases_cats
+
+    def printDog(self):
+        print(self.getName() ,'likes chasing cat: ',self.chasesCats())
+
+
+####################################################################
+clifford = Dog("Clifford", True)
+ginger = Pet("Ginger", "Cat")
+clifford.printPet()
+clifford.printDog()
+ginger.printPet()
