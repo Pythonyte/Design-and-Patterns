@@ -1,0 +1,136 @@
+'''
+Example: want to create diagrams in such a way that:
+    diagrams can be of multiple types:
+        different diagram may have differnt style even on same shapes.
+        shapes will hve diff. style in diff. diagrams
+
+factory classes:
+    PlainDiagramFactory
+    ColouredDiagramFactory
+
+product clasess:
+    PlainDiagram
+    PlainRectangle
+    PlainCicle
+    ColouredDiagram
+    ColouredRectangle
+    ColouredCircle
+
+factory Mathods:
+    make_diagram
+    make_circle
+    make_rectangle
+
+product mathods:
+    for diagram:
+        addShape
+        removeShape
+'''
+
+
+class PlainDiagramFactory:
+    def make_diagram(self,size,name):
+        return PlainDiagram(size,name)
+
+    def make_circle(self,size):
+        return PlainCircle(size)
+
+    def make_rectangle(self,size):
+        return PlainRectangle(size)
+
+class PlainDiagram:
+    def __init__(self,size,name):
+        self.name=name
+        self.size=size
+        self.shapes=[]
+        print(name,":Plaindiagram of",size,"is created.!")
+
+    def addShape(self,shape):
+        self.shapes.append(type(shape))
+        print(self.name,": Plaindiagram added shape :",type(shape))
+
+    def removeShape(self,shape):
+        self.shapes.remove(type(shape))
+        print(self.name,": Plaindiagram removed shape :",type(shape))
+
+    def getShapes(self):
+        return self.shapes
+
+class PlainRectangle:
+    def __init__(self,size):
+        self.size=size
+        print(":PlainRectangle of" , size , "is created.!")
+
+
+class PlainCircle:
+    def __init__(self,size):
+        self.size=size
+        print(":PlainCircle of" , size , "is created.!")
+
+
+class ColouredDiagramFactory:
+    def make_diagram(self,size,name):
+        return ColouredDiagram(size,name)
+
+    def make_circle(self,size):
+        return ColouredCircle(size)
+
+    def make_rectangle(self,size):
+        return ColouredRectangle(size)
+
+
+class ColouredDiagram:
+    def __init__(self,size,name):
+        self.name=name
+        self.size=size
+        self.shapes=[]
+        print(name,":ColouredDiagram of",size,"is created.!")
+
+    def addShape(self,shape):
+        self.shapes.append(type(shape))
+        print(self.name,": ColouredDiagram added shape :",type(shape))
+
+    def removeShape(self,shape):
+        self.shapes.remove(type(shape))
+        print(self.name,": ColouredDiagram removed shape :",type(shape))
+
+    def getShapes(self):
+        return self.shapes
+
+
+class ColouredRectangle:
+    def __init__(self,size):
+        self.size=size
+        print(":ColouredRectangle of" , size , "is created.!")
+
+
+class ColouredCircle:
+    def __init__(self,size):
+        self.size=size
+        print(":ColouredCircle of" , size , "is created.!")
+
+
+#####################################################################
+
+'''
+We will notice in the below example: that we will not bother about the shapes and diagram style versions which are different in each type of factory.
+We just have to call that factory, from which we want to pick the style and all.
+Rest as we know that interface is same in each factory (i.e. make_diagram make_circle make_rectangle), we dont have to worry abt these things. 
+'''
+
+factory1=PlainDiagramFactory()
+dia1=factory1.make_diagram(100,'MyplainDiagram')
+circle1=factory1.make_circle(40)
+rec1=factory1.make_rectangle(30)
+dia1.addShape(circle1)
+dia1.addShape(rec1)
+print(dia1.getShapes())
+
+
+factory2=ColouredDiagramFactory()
+dia2=factory2.make_diagram(500,'My-Color-Diagram')
+circle2=factory2.make_circle(450)
+rec2=factory2.make_rectangle(50)
+dia2.addShape(circle2)
+dia2.addShape(rec2)
+print(dia2.getShapes())
