@@ -1,0 +1,136 @@
+#our implementation has some deficiencies.
+# First, neither of the factories needs any state of its own, so we don’t really need to create factory instances.
+
+# Second, the code for SvgDiagramFactory is almost identical to that of DiagramFactory—the only difference being that
+#it returns SvgText rather than Text instances, and so on—which seems like needless duplication.
+
+# Third, our top-level namespace contains all of the classes: DiagramFactory, Diagram, Rectangle, Text,
+#and all the SVG equivalents. Yet we only really need to access the two factories.
+
+# Fourth: We are using same classes by adding prefix SVG like(SvgRectangle rather than Rectangle) to avoid 
+#name conflict, which is unneccessary work.
+
+#factory classes:
+#    PlainDiagramFactory
+#    ColouredDiagramFactory
+
+# Changes we can do :
+# If we make all product classes as nested of that factory classes: then : we can put them with same name.
+#and call them like : ColouredDiagramFactory.Circle or PlainDiagramFactory.Circle
+# By this we will be able to reduce our unnecessary top kevel namespace
+# There is no need to make factory instances then , as we can call those product classes directly.
+
+class PlainDiagramFactory:
+
+
+    @classmethod
+    def make_diagram(Class,size,name):
+        return Class.Diagram(size,name)
+
+    @classmethod
+    def make_circle(Class,size):
+        return Class.Circle(size)
+
+    @classmethod
+    def make_rectangle(Class,size):
+        return Class.Rectangle(size)
+
+    class Diagram:
+        def __init__(self,size,name):
+            self.name=name
+            self.size=size
+            self.shapes=[]
+            print(name,":Plaindiagram of",size,"is created.!")
+
+        def addShape(self,shape):
+            self.shapes.append(type(shape))
+            print(self.name,": Plaindiagram added shape :",type(shape))
+
+        def removeShape(self,shape):
+            self.shapes.remove(type(shape))
+            print(self.name,": Plaindiagram removed shape :",type(shape))
+
+        def getShapes(self):
+            return self.shapes
+
+    class Rectangle:
+        def __init__(self,size):
+            self.size=size
+            print(":PlainRectangle of" , size , "is created.!")
+
+
+    class Circle:
+        def __init__(self,size):
+            self.size=size
+            print(":PlainCircle of" , size , "is created.!")
+
+
+class ColouredDiagramFactory:
+
+
+    @classmethod
+    def make_diagram(Class,size,name):
+        return Class.Diagram(size,name)
+
+    @classmethod
+    def make_circle(Class,size):
+        return Class.Circle(size)
+
+    @classmethod
+    def make_rectangle(Class,size):
+        return Class.Rectangle(size)
+
+    class Diagram:
+        def __init__(self,size,name):
+            self.name=name
+            self.size=size
+            self.shapes=[]
+            print(name,":ColouredDiagram of",size,"is created.!")
+
+        def addShape(self,shape):
+            self.shapes.append(type(shape))
+            print(self.name,": ColouredDiagram added shape :",type(shape))
+
+        def removeShape(self,shape):
+            self.shapes.remove(type(shape))
+            print(self.name,": ColouredDiagram removed shape :",type(shape))
+
+        def getShapes(self):
+            return self.shapes
+
+    class Rectangle:
+        def __init__(self,size):
+            self.size=size
+            print(":ColouredDiagram of" , size , "is created.!")
+
+
+    class Circle:
+        def __init__(self,size):
+            self.size=size
+            print(":ColouredDiagram of" , size , "is created.!")
+
+
+#############################
+# we are not creating instances of factories , as its not needed.
+# both factories product classes have same name (untidiness removed)
+# Top level space have only two names now: (factory names) : 
+#Abstract factory pattern concept achived (i.e. client should interact only with the factories)
+
+
+
+dia1=PlainDiagramFactory.make_diagram(100,'MyPlainDia1')
+rec1=PlainDiagramFactory.make_rectangle(40)
+cir1=PlainDiagramFactory.make_circle(20)
+dia1.addShape(rec1)
+dia1.addShape(cir1)
+print('shapes in ' ,dia1.name,'::',dia1.getShapes())
+
+dia2=ColouredDiagramFactory.make_diagram(200,'MycolouredDia1')
+rec2=ColouredDiagramFactory.make_rectangle(50)
+cir2=ColouredDiagramFactory.make_circle(50)
+dia2.addShape(rec2)
+dia2.addShape(cir2)
+print('shapes in ' ,dia2.name,'::',dia2.getShapes())
+
+#Note: in this code, user can think that this is almost identical code in product nested 
+#classes of each factories but think when you are not just printing but creating real diagrams with different styles.
