@@ -1,0 +1,156 @@
+# Builder pattern :
+# We will make complex object in this step by step.
+# Motive: we will separate the construction of object and representation of object.
+# So that, We can use the same construction process for multiple representations:
+
+# Example:
+# make a sentence reader which can convert that sentence into multiple formats:
+# We can say : Reader is a director, which directs the client how to convert and will use to construct the object.
+'''
+TextConverter is a abstract class, having mathods like:
+    convertFormat
+    convertColor
+    convertStyle
+
+Now we have multiple representations here: like we have features to convert our sentences in ASCII and BINARY.
+So concrete classes are:
+Builders  :
+(abstract class)
+    TextConverter
+        convertFormat
+        convertColor
+        convertStyle
+
+(concrete classes)
+    ASCIIConverter
+        convertFormat
+        convertColor
+        convertStyle
+        getASCIIText
+
+    BINARYConverter
+        convertFormat
+        convertColor
+        convertStyle
+        getBinaryText
+
+
+Director:
+Reader
+    convert(builderName)
+        buildername.convertFormat
+        buildername.convertColor
+        buildername.convertStyle
+        return buildername.Text
+
+===>Things to notice here :
+Object is constructed under reader class.
+as per the buildername, object will be different accordingly.
+So same construction process will make multiple representation
+
+
+Motives that achieved:
+The logic behind creating complex object should be independent of the part that making up and assembling
+the object.( here logics are in converter class and making is in reader class)
+
+The construction process must allow different representations.
+
+
+# what client should do :
+will create the director (reader) object and configure it with desired builder object.
+'''
+
+import abc
+
+#abstract builder
+class AbstractTextConverter(metaclass=abc.ABCMeta):
+
+    @abc.abstractmethod
+    def convertFormat(self):
+        pass
+
+    @abc.abstractmethod
+    def convertColor(self):
+        pass
+
+    @abc.abstractmethod
+    def convertStyle(self):
+        pass
+
+    @abc.abstractmethod
+    def getResultText(self):
+        pass
+
+
+#concrete builder
+class ASCIIConverter(AbstractTextConverter):
+
+    def __init__(self,sentence=None):
+        self.sentence=sentence
+
+    def convertFormat(self):
+        self.sentence=' '.join([str(ord(x)) for x in self.sentence])
+
+    def convertStyle(self):
+        ENDC = '\033[0m'
+        BOLD = '\033[1m'
+        self.sentence=BOLD+self.sentence+ENDC
+
+    def convertColor(self):
+        OKBLUE = '\033[94m'
+        ENDC = '\033[0m'
+        self.sentence=OKBLUE+self.sentence+ENDC
+
+    def getResultText(self):
+        return self.sentence
+
+#concrete builder
+class BINARYConverter(AbstractTextConverter):
+
+    def __init__(self,sentence=None):
+        self.sentence=sentence
+
+    def convertFormat(self):
+        self.sentence=' '.join([format(ord(x), 'b') for x in self.sentence])
+
+    def convertStyle(self):
+        ENDC = '\033[0m'
+        UNDERLINE = '\033[4m'
+        self.sentence=UNDERLINE+self.sentence+ENDC
+
+    def convertColor(self):
+        OKGREEN = '\033[92m'
+        ENDC = '\033[0m'
+        self.sentence=OKGREEN+self.sentence+ENDC
+
+    def getResultText(self):
+        return self.sentence
+
+#director ( who interacts with clients)
+
+class SentenceReader:
+    #constructs the product
+    def construct_new_format(self,builder):
+        builder.convertFormat()
+        builder.convertColor()
+        builder.convertStyle()
+        return builder.getResultText()
+
+#################################################################
+
+reader=SentenceReader()
+#print('Sumit Singhal ==>',reader.construct_new_format(ASCIIConverter('Sumit Singhal')))
+print('ABC ==>',reader.construct_new_format(BINARYConverter('ABC')))
+print('ABC ==>',reader.construct_new_format(ASCIIConverter('ABC')))
+
+
+
+
+
+
+#looks similer to Abstract factory mathod:but differences are:
+# this construct a complex object step by step, ABSF focuses on family of product objects
+# builder returns the product at final step , but in absf product get returned immediately.
+
+# Builder pattern constructs the product step by step under the director's control . Only when the product
+# is finished does the director retrieve it from the builder.
