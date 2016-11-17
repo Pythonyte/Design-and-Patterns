@@ -127,6 +127,7 @@ class BINARYConverter(AbstractTextConverter):
         return self.sentence
 
 #director ( who interacts with clients)
+
 class SentenceReader:
     #constructs the product
     def construct_new_format(self,builder):
@@ -135,12 +136,17 @@ class SentenceReader:
         builder.convertStyle()
         return builder.getResultText()
 
+    def returnIntermediatProduct(self,builderObject):
+        return builderObject.getResultText()
 
 
 #################################################################
 reader=SentenceReader()
-print('Sumit Singhal ==>',reader.construct_new_format(ASCIIConverter('Sumit Singhal')))
+#print('Sumit Singhal ==>',reader.construct_new_format(ASCIIConverter('Sumit Singhal')))
 print('ABC ==>',reader.construct_new_format(BINARYConverter('ABC')))
+print(reader.returnIntermediatProduct(ASCIIConverter('SUMIT').convertColor()))
+print(reader.returnIntermediatProduct(ASCIIConverter('SUMIT').convertColor().convertStyle()))
+print(reader.returnIntermediatProduct(BINARYConverter('SUMIT').convertColor().convertStyle()))
 
 
 
