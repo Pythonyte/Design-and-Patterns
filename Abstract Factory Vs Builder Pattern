@@ -1,0 +1,19 @@
+Mark #1: Both patterns have used a generic class as the entry-class. The only difference is the name of the class. One pattern has named it as “Client”, while the other named it as “Director”. 
+Mark #2: Here again the difference is the class name. It is “AbstractFactory” for one and “Builder” for the other. Additionally both classes are of type abstract. 
+Mark #3: Once again both patterns have defined two generic (WindowsFactory & ConcreteBuilder) classes. They both have created by inheriting their respective abstract class. 
+Mark #4: Finally, both seem to produce some kind of a generic output.
+
+Now, where are we? Aren’t they looking almost identical? So then why are we having two different patterns here?
+
+Let’s compare the two again side by side for one last time, but this time, focusing on the differences.
+
+Abstract Factory: Emphasizes a family of product objects (either simple or complex)
+Builder: Focuses on constructing a complex object step by step
+Abstract Factory: Focus on *what* is made
+Builder: Focus on *how* it is made
+Abstract Factory: Focus on defining many different types of *factories* to build many *products*, and it is not a one builder for just one product
+Builder: Focus on building a one complex but one single *product*
+Abstract Factory: Defers the choice of what concrete type of object to make until run time
+Builder: Hide the logic/ operation of how to compile that complex object
+Abstract Factory: *Every* method call creates and returns different objects
+Builder: Only the *last* method call returns the object, while other calls partially build the object
