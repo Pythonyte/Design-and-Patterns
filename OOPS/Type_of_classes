@@ -1,0 +1,46 @@
+#Type of classes we can create, we can make combinations of them also..
+
+# super class in this hierarchy
+class Super:
+    def mathod(self):
+        print("In Super class")
+
+    def needAction(self):
+        self.action()
+
+
+# class which simply inherit all property of super class
+# dont want to change any thing or add anything
+class Inheritor(Super):
+    pass
+
+#class which inherit properties of super class and want to relpace some inherited properties
+class Replacer(Super):
+    def mathod(self):
+        print("In Replacer Class\n")
+
+# class which inherit properties of super class and want to extend some inherited properties means want to add some additional features in a particular functionality.
+class Extender(Super):
+    def mathod(self):
+        print("In extender class starts")
+        Super.mathod(self)
+        print("In extender class ends")
+
+# class which provide some features bcoz of them we will be able to use some Super class functionallity.
+class Provider(Super):
+    def action(self):
+        print("Providing action mathod in namespace.So that needAction mathod can be execute!!")
+
+
+
+if __name__ == '__main__':
+
+    for klass in (Inheritor,Replacer,Extender):
+        print("Class Name ::",klass.__name__)
+        klass().mathod()
+
+    p1=Provider()
+    print("Class Name ::",p1.__class__.__name__)
+    p1.needAction()
+
+
