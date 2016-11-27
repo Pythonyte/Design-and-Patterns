@@ -1,0 +1,31 @@
+# set attribute and get attribute:
+
+# __getattr__ => it will get called once you are trying to get any nonexisting attribute of the self object
+# __setattr__ => will get called once you are trying to set the value of any attribute of self object
+
+class SetterGetter:
+    def __getattr__(self, attr):
+        if 'help' in attr:
+            self.__dict__[attr]=1
+            return 'you are live now!!'
+        print(attr," : not found !!")
+        raise NotImplementedError
+
+    def __setattr__(self, key, value):
+        print('Setting :',key)
+        self.__dict__[key]=value
+        # if we will set like : self.[key]=value
+        # it will again call __setattr__ and will go to endless loop
+
+
+if __name__ == '__main__':
+    s=SetterGetter()
+    print(s.helpme)
+    s.data=40
+    print(s.__dict__)
+
+
+#OUTPUT
+you are live now!!
+Setting : data
+{'data': 40, 'helpme': 1}
