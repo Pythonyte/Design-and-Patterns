@@ -1,0 +1,121 @@
+class product:
+    def __init__(self,code,name,cost):
+        self.code=code
+        self.name=name
+        self.cost=cost
+
+class coin:
+    def __init__(self,name,amount):
+        self.name=name
+        self.amount=amount
+
+class return_type:
+    def __init__(self,coins,product):
+        # coins is an hash  (containing denominations as key and no of that coins as value of remaining change)
+        # product is an class object, but we will return name only
+        self.coins=coins
+        self.product=product.name
+
+class vendingMachine:
+    def __init__(self):
+
+        self.state=None
+        self.UserBalance=0
+        self.selectedProduct=None
+
+        #create objects for products
+        product.product1=product(101,'coke',25)
+        product.product2=product(102,'pepsi',20)
+        product.product3=product(103,'Soda',15)
+        product.product4=product(104,'water',10)
+
+        #create objects for coins
+        #penny : 1 cent     #nickel : 5 cent    #dime : 10 cent  #quarter: 25 cent
+        coin.penny=coin('penny',1)
+        coin.nickel=coin('nickel',5)
+        coin.dime=coin('dime',10)
+        coin.quarter=coin('quarter',25)
+
+        #set Product count ( Invetnory setup) product: quantity
+        self.productCount={
+             product.product1:0,
+             product.product2:0,
+             product.product3:0,
+             product.product4:0
+        }
+
+        #set coin inventory in machine : cointype : no of coins
+        self.coinCount={
+            coin.penny:0,
+            coin.nickel:0,
+            coin.dime:0,
+            coin.quarter:0
+        }
+
+
+
+    def __initialize_inventory(self):
+        # 20 quantity of each product
+        # 30 coins of each denomination
+        product.productCount[self.product1]=20
+        product.productCount[self.product2]=20
+        product.productCount[self.product3]=20
+        product.productCount[self.product4]=20
+
+        self.coinCount[coin.penny]=30
+        self.coinCount[coin.nickel]=30
+        self.coinCount[coin.dime]=30
+        self.coinCount[coin.quarter]=30
+
+
+    def insert_coin(self,coinObj):
+            self.UserBalance+=coinObj.amount
+            self.state="Inserted"
+
+    def selectProduct(self,prodObj):
+        self.selectedProduct=prodObj
+        self.state="Selected"
+
+    def get_exact_change(self,balance):
+        #making static just for implementaion
+        availablechanges=[25,10,5,1]
+        change={} 
+        for val in availablechanges:
+            no_of_coins=int(balance/val)
+            balance=balance%val
+            change[val]=no_of_coins
+            if balance==0:
+                break
+        return change
+
+    def return_PC(self):
+        itemcost=self.selectedProduct.cost
+        itemname=self.selectedProduct.name
+        remainBalance=self.UserBalance - itemcost
+
+        totalcoins=self.get_exact_change(remainBalance)
+        print('Your Item->',itemname,itemcost)
+        print('Your Change =>',totalcoins)
+        return return_type(totalcoins,self.selectedProduct)
+
+
+    def cancel(self):
+        totalcoins=self.get_exact_change(self.UserBalance)
+        print('Canceled !!=> Your amount is :',totalcoins)
+        return totalcoins
+    
+    def reset(self):
+        self.__initialize_inventory()
+    
+
+==> Calling <==
+V=vendingMachine()
+V.insert_coin(coin.quarter)
+V.insert_coin(coin.dime)
+V.selectProduct(product.product2) #pepsi
+V.return_PC()
+
+
+==> OutPut <==
+Your Item-> pepsi 20
+Your Change => {25: 0, 10: 1, 5: 1}
