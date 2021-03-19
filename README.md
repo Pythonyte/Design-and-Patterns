@@ -1,2 +1,2 @@
-# Design-and-Patterns
-Design and Patterns with Python
+# Design Patterns
+Design Patterns with Python
